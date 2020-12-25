@@ -49,7 +49,7 @@ def agronaVersion = '1.9.0'
 def agronaVersionRange = '[1.9,1.10[' // allow any patch release of 1.9.x
 def sbeVersion = '1.20.4'
 def checkstyleVersion = '8.38'
-def hamcrestVersion = '2.2'
+def hamcrestVersion = '2.1'
 def junitVersion = '5.7.0'
 def mockitoVersion = '3.6.28'
 def byteBuddyVersion = '1.10.19'
@@ -412,6 +412,20 @@ project(':aeron-archive') {
         api files('build/classes/java/generated')
         codecGeneration "uk.co.real-logic:sbe-tool:${sbeVersion}"
         testImplementation project(':aeron-test-support')
+
+        api("org.slf4j:slf4j-api") {
+            version {
+                strictly("1.7.+")
+                prefer("1.7.30")
+            }
+        }
+        testImplementation("org.slf4j:slf4j-simple:1.7.28")
+        testImplementation("org.awaitility:awaitility:4.0.3")
+        implementation ("org.mockito:mockito-junit-jupiter:${mockitoVersion}") {
+            exclude group: 'org.junit.jupiter'
+            exclude group: 'net.bytebuddy'
+        }
+
     }
 
     def generatedDir = file("${buildDir}/generated-src")
